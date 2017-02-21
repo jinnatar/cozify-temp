@@ -2,7 +2,7 @@
 import time
 
 from cozify import cloud, hub, multisensor
-from cozify-temp import storage
+from cozifytemp import storage
 
 while True:
     data = hub.getDevices()
