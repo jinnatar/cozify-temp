@@ -4,8 +4,15 @@ import time
 from cozify import cloud, hub, multisensor
 from cozifytemp import storage
 
+sensors = []
 while True:
     data = hub.getDevices()
     sensors = multisensor.getMultisensorData(data)
-    storage.storeMultisensor(sensors)
+    try:
+        storage.storeMultisensor(sensors)
+    except:
+        print('Issues writing to InfluxDB')
+    else:
+        # write succeeded, drop cache
+        sensors = []
     time.sleep(5)
