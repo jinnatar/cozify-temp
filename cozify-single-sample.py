@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from cozify import cloud, hub, multisensor
+from cozify import hub, multisensor
 from cozifytemp import storage
 
 data = hub.getDevices()

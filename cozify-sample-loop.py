@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import time
 
-from cozify import cloud, hub, multisensor
+from cozify import hub, multisensor
 from cozifytemp import storage
 
 sensors = []
