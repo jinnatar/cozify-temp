@@ -4,11 +4,11 @@ from influxdb import SeriesHelper
 from . import config as c
 
 db = InfluxDBClient(
-        c.config.get('Storage', 'host'),
-        c.config.get('Storage', 'port'),
-        c.config.get('Storage', 'user'),
-        c.config.get('Storage', 'password'),
-        c.config.get('Storage', 'db')
+        c.config['Storage']['host'],
+        c.config['Storage']['port'],
+        c.config['Storage']['user'],
+        c.config['Storage']['password'],
+        c.config['Storage']['db']
 )
 
 class MultisensorSeries(SeriesHelper):
