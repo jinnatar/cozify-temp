@@ -26,7 +26,7 @@ def main():
         try:
             print('writing to InfluxDB...')
             storage.storeMultisensor(sensors)
-        except InfluxDBServerError():
+        except InfluxDBServerError:
             print('Data kept in cache(%s), issues writing to InfluxDB' % (len(sensors)))
         else:
             # write succeeded, drop cache
