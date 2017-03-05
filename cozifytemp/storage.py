@@ -16,13 +16,15 @@ class MultisensorSeries(SeriesHelper):
     class Meta:
         client = db
         series_name = 'multisensor'
-        fields = ['temperature', 'humidity', 'time']
+        fields = ['temperature', 'humidity']
         tags = ['name']
+        precision = 'ms'
 
 
 # expects list of maps: [{name: 'foo', temperature: 42, humidity: 30}, ...]
 def storeMultisensor(sensors):
     for sensor in sensors:
+        # time comes in milliseconds, influxDB expects nanoseconds
         MultisensorSeries(name=sensor['name'], temperature=sensor['temperature'], humidity=sensor['humidity'], time=sensor['time'])
-        print('%s, %s C, %s %%H' %(sensor['name'], sensor['temperature'], sensor['humidity']))
+        print('%s: %s, %s C, %s %%H' %(sensor['time'], sensor['name'], sensor['temperature'], sensor['humidity']))
     MultisensorSeries.commit()
