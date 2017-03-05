@@ -3,6 +3,11 @@
 from cozify import hub, multisensor
 from cozifytemp import storage
 
-data = hub.getDevices()
-sensors = multisensor.getMultisensorData(data)
-storage.storeMultisensor(sensors)
+# very naive example pulling a single sample and storing it
+def main():
+    data = hub.getDevices()
+    sensors = multisensor.getMultisensorData(data)
+    storage.storeMultisensor(sensors)
+
+if __name__ == "__main__":
+    main()
