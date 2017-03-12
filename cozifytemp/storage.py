@@ -1,5 +1,7 @@
 from influxdb import InfluxDBClient
 from influxdb import SeriesHelper
+import datetime
+
 
 from . import config as c
 
@@ -18,13 +20,18 @@ class MultisensorSeries(SeriesHelper):
         series_name = 'multisensor'
         fields = ['temperature', 'humidity']
         tags = ['name']
-        precision = 'ms'
 
 
 # expects list of maps: [{name: 'foo', temperature: 42, humidity: 30}, ...]
 def storeMultisensor(sensors):
     for sensor in sensors:
-        # time comes in milliseconds, influxDB expects nanoseconds
-        MultisensorSeries(name=sensor['name'], temperature=sensor['temperature'], humidity=sensor['humidity'], time=sensor['time'])
+        # time is confusing:
+        # - cozify provides time in milliseconds
+        # - influxDB internally stores as microseconds
+        # - python-influxdb is finicky with int format timestamps, hence datetime object works best
+        # also need to make sure we interpret the timestamp as UTC!
+        time=datetime.datetime.fromtimestamp(sensor['time']/1000, tz=datetime.timezone.utc)
+
+        MultisensorSeries(name=sensor['name'], temperature=sensor['temperature'], humidity=sensor['humidity'], time=time)
         print('%s: %s, %s C, %s %%H' %(sensor['time'], sensor['name'], sensor['temperature'], sensor['humidity']))
     MultisensorSeries.commit()
