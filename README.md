@@ -5,9 +5,9 @@ Authentication is handled by python-cozify bindings developed separately: [githu
 
 ## installation
 - sudo pip3 install cozify (or install manually from: [github.com/Artanicus/python-cozify](https://github.com/Artanicus/python-cozify))
-- cp main.cfg.dist main.cfg
-- edit main.cfg to contain your InfluxDB parameters
+- create InfluxDB database called 'cozify'
 - run cozify-single-sample.py to get a single snapshot and push it to InfluxDB.
+- If you so choose, customize db connection parameters in ~/.config/cozify-temp/influxdb.cfg (config created with defaults at runtime)
 - if a single sample was fine, run cozify-sample-loop.py to get and push data on a 5s interval
 
 ![example Grafana graphs][graphs]

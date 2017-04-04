@@ -1,7 +1,0 @@
-[Storage]
-# influxdb
-host: localhost
-port: 8086
-user: root
-password: pass
-db: cozify
