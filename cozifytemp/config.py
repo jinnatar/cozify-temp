@@ -40,7 +40,6 @@ def _initState(config_file):
         cf = open(config_file, 'w+') # if this fails, let it burn
         os.chmod(config_file, 0o600)
         # now we should have a blank config_file so let's write out the defaults
-        print(*config, sep='\n')
         config.write(cf)
     else: # file is readable so let's read it in and override defaults
         config.read_file(cf)
