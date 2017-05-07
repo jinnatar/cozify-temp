@@ -1,7 +1,7 @@
 import configparser
 import os
 
-def _initXDG():
+def _initXDG(program_name):
     # per the XDG basedir-spec we adhere to $XDG_CONFIG_HOME if it's set, otherwise assume $HOME/.config
     xdg_config_home = ''
     if 'XDG_CONFIG_HOME' in os.environ:
@@ -14,11 +14,11 @@ def _initXDG():
         os.mkdir(xdg_config_home, 0o0700)
 
     # finally create our own config dir
-    config_dir = "%s/%s" % (xdg_config_home, 'cozify-temp')
+    config_dir = "%s/%s" % (xdg_config_home, program_name)
     if not os.path.isdir(config_dir):
         os.mkdir(config_dir, 0o0700)
 
-    return config_dir
+    return config_dir + '/'
 
 def _initState(config_file):
     # set defaults, these are used if the config doesn't override
@@ -45,5 +45,5 @@ def _initState(config_file):
 
     return config
 
-config_file = _initXDG() + 'influxdb.cfg'
+config_file = _initXDG('cozify-temp') + 'influxdb.cfg'
 config = _initState(config_file)
