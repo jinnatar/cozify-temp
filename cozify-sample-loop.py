@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
-import time, logging
+import time, logging, signal, sys, pickle
 
 from cozify import hub, cloud, multisensor
-from cozifytemp import storage
+from cozifytemp import storage, cache
 
 from influxdb.exceptions import InfluxDBServerError
 from cozify.Error import APIError
 
-
 def main():
-    sensors = [] # used as a cache for sensor data
-
+    global sensors
     # loop until interrupted, can be for example run as a systemd service
     while True:
         # cozify.hub.getDevices will return the raw devices API call blob as a dictionary
@@ -43,8 +41,22 @@ def main():
                 # write succeeded, drop cache
                 print('write(%s) successful!' % len(sensors))
                 sensors = []
+                cache.clear()
         time.sleep(60)
 
+def sigterm_handler(signal, frame):
+    global sensors
+    if len(sensors) > 0:
+        cache.dump(sensors)
+        logging.critical('SIGTERM, dumped cache to file')
+    else:
+        logging.critical('SIGTERM, no cache to dump')
+    sys.exit(1)
+
+sensors = [] # used as a cache for sensor data
+if cache.exists(): # populate any existing cache dump
+    sensors.extend(cache.read())
 
 if __name__ == "__main__":
+    signal.signal(signal.SIGTERM, sigterm_handler)
     main()
