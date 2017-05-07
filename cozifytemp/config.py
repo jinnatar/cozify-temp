@@ -18,8 +18,7 @@ def _initXDG():
     if not os.path.isdir(config_dir):
         os.mkdir(config_dir, 0o0700)
 
-    config_file = "%s/influxdb.cfg" % config_dir
-    return config_file
+    return config_dir
 
 def _initState(config_file):
     # set defaults, these are used if the config doesn't override
@@ -46,5 +45,5 @@ def _initState(config_file):
 
     return config
 
-config_file = _initXDG()
+config_file = _initXDG() + 'influxdb.cfg'
 config = _initState(config_file)
