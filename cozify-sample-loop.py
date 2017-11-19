@@ -34,7 +34,7 @@ def main():
             # to mitigate this, we'll cache results and try again on the next loop with both old & new data
             try:
                 print('writing to InfluxDB...')
-                storage.storeMultisensor(sensors)
+                storage.storeMultisensor(sensors, verbose=False)
             except InfluxDBServerError:
                 print('Data kept in cache(%s), issues writing to InfluxDB' % (len(sensors)))
             else:
