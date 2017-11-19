@@ -18,7 +18,7 @@ influx -execute 'CREATE DATABASE cozify'
 
 - Test connection by running cozify-single-sample.py to get a single snapshot and push it to InfluxDB. The single-sample script is more naive but simpler to get started with.
 - If you so choose, customize db connection parameters in ~/.config/cozify-temp/influxdb.cfg (config created with defaults at first runtime)
-- if a single sample was fine, run cozify-sample-loop.py to get and push data on a 5s interval. The loop script is more robust than the single sample.
+- if a single sample was fine, run cozify-sample-loop.py to get and push data on a 60s interval. The loop script is more robust than the single sample and is usable as a systemd daemon.
 
 ![example Grafana graphs][graphs]
 
