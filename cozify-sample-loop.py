@@ -15,6 +15,7 @@ def main():
         # it will also trigger cozify.cloud.authentication() if we don't have a valid hub key yet.
         # if auth fails it will throw an APIError exception and kill this loop, so we need to check for that
         try:
+            cloud.ping()
             data = hub.getDevices()
         except APIError as e:
             if e.status_code == 401: # auth failed
