@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import time, logging, signal, sys, pickle
+import time, logging, signal, sys
 
 from cozify import hub, cloud, multisensor
 from cozifytemp import storage, cache
