@@ -31,9 +31,9 @@ def storeMultisensor(sensors, tz=datetime.timezone.utc, verbose=True):
         # - python-influxdb is finicky with int format timestamps, hence datetime object works best
         # also need to make sure we interpret the timestamp as UTC!
         # but when printing we want Hub timezone.
-        time=datetime.datetime.fromtimestamp(sensor['time']/1000, tz=datetime.timezone.utc)
+        time=datetime.datetime.fromtimestamp(sensor['lastSeen']/1000, tz=datetime.timezone.utc)
 
         MultisensorSeries(name=sensor['name'], temperature=sensor['temperature'], humidity=sensor['humidity'], time=time)
         if verbose:
-            print('[%s] %s: %s, %s C, %s %%H' %(sensor['time'], time.astimezone(tz), sensor['name'], sensor['temperature'], sensor['humidity']))
+            print('[%s] %s: %s, %s C, %s %%H' %(sensor['lastSeen'], time.astimezone(tz), sensor['name'], sensor['temperature'], sensor['humidity']))
     MultisensorSeries.commit()

@@ -5,45 +5,36 @@ from cozifytemp import storage, config
 from influxdb.exceptions import InfluxDBServerError
 import pytz, time
 
-# experimental example of using the new python-cozify=0.2.10 capability filtering
+# Get all temperature and humidity capable data
+# This version is only compatible with python-cozify >= v0.2.11 since it relies on the new capabilities features
 def main():
-    temp_sensors = hub.devices(capability=hub.capability.TEMPERATURE)
-    hygro_sensors = hub.devices(capability=hub.capability.HUMIDITY)
-    sensors = temp_and_hygro(temp_sensors, hygro_sensors)
+    sensors = hub.devices(capabilities=[hub.capability.TEMPERATURE, hub.capability.HUMIDITY])
     tz=pytz.timezone(hub.tz())
     try:
-        storage.storeMultisensor(sensors, tz=tz)
+        storage.storeMultisensor(conv(sensors), tz=tz)
     except:
         print('Storage call failed, you may want to edit the db config at: %s' % config.config_file)
         raise
     else:
          print('write(%s) successful!' % len(sensors))
 
-# Data smasher to make the new device filtering logic still work with old storage logic
-def temp_and_hygro(temp_sensors, hygro_sensors):
+# Data smasher to fill in the gaps of what we didn't get from the devices
+def conv(sensors):
     out = {}
-    print(type(temp_sensors))
-    for device_id, device in temp_sensors.items():
+    for device_id, device in sensors.items():
         if device_id not in out:
             out[device_id] = {}
         out[device_id]['name'] = device['name']
-        out[device_id]['temperature'] = device['state']['temperature']
-        out[device_id]['humidity'] = None # set them to None, the next loop will write in values where we have them
-        if 'lastSeen' in device['state']:
-            out[device_id]['time'] = device['state']['lastSeen']
-        else:
-            out[device_id]['time'] = time.time() * 1000
 
-    for device_id, device in hygro_sensors.items():
-        if device_id not in out:
-            out[device_id] = {}
-        out[device_id]['name'] = device['name']
-        out[device_id]['humidity'] = device['state']['humidity']
-        if 'lastSeen' in device['state']:
-            out[device_id]['time'] = device['state']['lastSeen']
-        else:
-            out[device_id]['time'] = time.time() * 1000
-
+        for key, default in {
+                'temperature': None,
+                'humidity': None,
+                'lastSeen': int(time.time()*1000)
+                }.items():
+            if key in device['state']:
+                out[device_id][key] = device['state'][key]
+            else:
+                out[device_id][key] = default
     return list(out.values())
 
 if __name__ == "__main__":
