@@ -16,7 +16,7 @@ def main():
         # if auth fails it will throw an APIError exception and kill this loop, so we need to check for that
         try:
             # Check connectivity and have it auto-renewed if it's deemed time to do so.
-            cloud.ping()
+            hub.ping()
             # Get all devices that have a temperature OR humidity capability.
             # Homogenize it to not have holes in the data.
             data = util.homogenize(hub.devices(capabilities=[hub.capability.TEMPERATURE, hub.capability.HUMIDITY]))
