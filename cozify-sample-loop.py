@@ -15,8 +15,12 @@ def main():
         # it will also trigger cozify.cloud.authentication() if we don't have a valid hub key yet.
         # if auth fails it will throw an APIError exception and kill this loop, so we need to check for that
         try:
-            # Check connectivity and have it auto-renewed if it's deemed time to do so.
+            # Check hub & cloud connectivity and have it auto-renewed if it's deemed time to do so.
             hub.ping()
+            # Cloud checking is needed since the loop will run for a long time unattended and cloud tokens expire
+            # every 28 days.
+            cloud.ping()
+
             # Get all devices that have a temperature OR humidity capability.
             # Homogenize it to not have holes in the data.
             data = util.homogenize(hub.devices(capabilities=[hub.capability.TEMPERATURE, hub.capability.HUMIDITY]))
