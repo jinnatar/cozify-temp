@@ -1,3 +1,4 @@
+cozify
 influxdb-client
 requests
 absl-py
