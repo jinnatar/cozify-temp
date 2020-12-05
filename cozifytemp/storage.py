@@ -24,7 +24,7 @@ client = InfluxDBClient(
 write_api = client.write_api(write_options=SYNCHRONOUS)
 
 # sensors expects list of maps: [{name: 'foo', temperature: 42, humidity: 30}, ...]
-def store_sensor_data(sensors, tz=datetime.timezone.utc, verbose=True):
+def store_sensor_data(sensors, tz=datetime.timezone.utc, verbose=False):
     sequence = []
     for sensor in sensors:
         # time is confusing:
@@ -40,13 +40,16 @@ def store_sensor_data(sensors, tz=datetime.timezone.utc, verbose=True):
             if value:
                 point = Point(type).tag('name', name).field('value', value).time(time, WritePrecision.MS)
                 sequence.append(point)
-                if verbose:
-                    logging.info('[{time}] {name}: {value} {unit}'.format(
+                infoline = '[{time}] {name}: {value} {unit}'.format(
                         time=time.astimezone(tz),
                         unit=unit,
                         type=type,
                         name=name,
                         value=value,
-                        ))
+                        )
+                if verbose:
+                    print(infoline)
+                else:
+                    logging.info(infoline)
     write_api.write(bucket, org, sequence)
     return len(sequence)
