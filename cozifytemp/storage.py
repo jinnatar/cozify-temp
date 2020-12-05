@@ -1,29 +1,31 @@
-from influxdb import InfluxDBClient
-from influxdb import SeriesHelper
 import datetime
+from absl import logging
+from influxdb_client import InfluxDBClient, Point, WritePrecision
+from influxdb_client.client.write_api import SYNCHRONOUS
 
+# You can generate a Token from the "Tokens Tab" in the UI
+token = "rDXfwuTAj3h8VsrvNsiovi8Cx5DK43tW-FWUG_Da9dYKHh5NYY93ai6cbiHt4GgjsjEeoiGZ-j0wBxnFfPjRhQ=="
+org = "Arcadia"
+bucket = "cozify"
+
+sensor_types = {
+        'temperature': 'C',
+        'humidity': '%RH'
+        }
 
 from . import config as c
 
-db = InfluxDBClient(
-        c.config['Storage']['host'],
-        c.config['Storage']['port'],
-        c.config['Storage']['user'],
-        c.config['Storage']['password'],
-        c.config['Storage']['db']
+client = InfluxDBClient(
+        url=c.config['Storage']['url'],
+        token=c.config['Storage']['token'],
+        org=c.config['Storage']['organization']
 )
 
-# helper class for defining the type of series data stored in influxDB
-class MultisensorSeries(SeriesHelper):
-    class Meta:
-        client = db
-        series_name = 'multisensor'
-        fields = ['temperature', 'humidity']
-        tags = ['name']
-
+write_api = client.write_api(write_options=SYNCHRONOUS)
 
 # sensors expects list of maps: [{name: 'foo', temperature: 42, humidity: 30}, ...]
-def storeMultisensor(sensors, tz=datetime.timezone.utc, verbose=True):
+def store_sensor_data(sensors, tz=datetime.timezone.utc, verbose=True):
+    sequence = []
     for sensor in sensors:
         # time is confusing:
         # - cozify provides time in milliseconds
@@ -32,8 +34,19 @@ def storeMultisensor(sensors, tz=datetime.timezone.utc, verbose=True):
         # also need to make sure we interpret the timestamp as UTC!
         # but when printing we want Hub timezone.
         time=datetime.datetime.fromtimestamp(sensor['lastSeen']/1000, tz=datetime.timezone.utc)
-
-        MultisensorSeries(name=sensor['name'], temperature=sensor['temperature'], humidity=sensor['humidity'], time=time)
-        if verbose:
-            print('[%s] %s: %s, %s C, %s %%H' %(sensor['lastSeen'], time.astimezone(tz), sensor['name'], sensor['temperature'], sensor['humidity']))
-    MultisensorSeries.commit()
+        name=sensor['name']
+        for type, unit in sensor_types.items():
+            value=sensor[type]
+            if value:
+                point = Point(type).tag('name', name).field('value', value).time(time, WritePrecision.MS)
+                sequence.append(point)
+                if verbose:
+                    logging.info('[{time}] {name}: {value} {unit}'.format(
+                        time=time.astimezone(tz),
+                        unit=unit,
+                        type=type,
+                        name=name,
+                        value=value,
+                        ))
+    write_api.write(bucket, org, sequence)
+    return len(sequence)

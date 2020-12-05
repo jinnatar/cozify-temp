@@ -25,11 +25,10 @@ def _initState(config_file):
     config = configparser.ConfigParser()
     config.read_dict({'Storage':
         {
-            'host': 'localhost',
-            'port': 8086,
-            'user': '',
-            'password': '',
-            'db': 'cozify'
+            'url': 'http://localhost:8086',
+            'token': '',
+            'organization': '',
+            'bucket': 'cozify'
         }
     })
 
