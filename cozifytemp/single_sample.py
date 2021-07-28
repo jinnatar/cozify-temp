@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from cozify import hub
+from cozify import hub, cloud
 from cozifytemp import storage, config, util
 from influxdb_client.rest import ApiException
 import pytz, time
@@ -8,7 +8,11 @@ import pytz, time
 # Get all temperature and humidity capable data
 # This version is only compatible with python-cozify >= v0.2.11 since it relies on the new capabilities features
 def main():
-    sensors = hub.devices(capabilities=[hub.capability.TEMPERATURE, hub.capability.HUMIDITY])
+    cloud.authenticate()
+    sensors = hub.devices(capabilities= [
+        hub.capability.TEMPERATURE,
+        hub.capability.HUMIDITY]
+        )
     tz=pytz.timezone(hub.tz()) # Only used to print timezones nice, storage is always in UTC!
     try:
         storage.store_sensor_data(util.homogenize(sensors), tz=tz, verbose=True)

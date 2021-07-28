@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "cozifytemp"
+version = "0.1.0"
+description = "Sample Cozify sensor to influxdb logger"
+authors = ["Artanicus <artanicus@nocturnal.fi>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pytz = "^2021.1"
+absl-py = "^0.13.0"
+cozify = "^0.2.28"
+influxdb-client = "^1.19.0"
+requests = "^2.26.0"
+
+[tool.poetry.dev-dependencies]
+bumpversion = "^0.6.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+cozifytemp-single-sample = 'cozifytemp.single_sample:main'
+cozifytemp-sample-loop = 'cozifytemp.sample_loop:run'

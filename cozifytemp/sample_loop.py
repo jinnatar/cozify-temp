@@ -98,9 +98,13 @@ if cache.exists(): # populate any existing cache dump
     logging.info('Found cache from disk, adding it to in-memory cache')
     sensors.extend(cache.read())
 
-if __name__ == "__main__":
+def run():
     signal.signal(signal.SIGTERM, sigterm_handler)
     try:
         app.run(main)
     except KeyboardInterrupt:
         cleanup()
+
+
+if __name__ == "__main__":
+    run()

@@ -3,12 +3,26 @@ Pull sensor data from Cozify Hub into InfluxDB. At current temperature & humidit
 
 Authentication and other Cozify details are handled by python-cozify bindings developed separately: [github.com/Artanicus/python-cozify](https://github.com/Artanicus/python-cozify) but this repo acts as an official example.
 
-## installation
-- Install dependencies:
+## Installation
 
+If you just want to use it:
 ```
-sudo pip3 install -Ur requirements.txt
+pip3 install cozifytemp
+cozifytemp-single-sample # perform the first time authentication and create a default config
+# edit ~/.config/cozify-temp/influxdb.cfg to match your infuxdb location if needed
+cozifytemp-sample-loop # pull & store data in a loop.
 ```
+
+If you want to experiment with the code:
+```
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python3 -
+git clone https://github.com/Artanicus/cozify-temp
+cd cozify-temp
+poetry run cozifytemp-single-sample
+poetry run cozifytemp-sample-loop
+```
+
+## Configuration
 
 - For storage, create a InfluxDB bucket called for example `cozify`. You will also need to configure your organization and generate a token that has write access to the bucket.
 - The easiest way is to use the web interface of InfluxDB 2.0 by navigating to http://localhost:8086 or which ever hostname your InfluxDB server is hosted at.
