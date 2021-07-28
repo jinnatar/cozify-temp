@@ -32,6 +32,15 @@ poetry run cozifytemp-sample-loop
 - if a single sample was fine, run cozify-sample-loop.py to get and push data on a 60s interval. The loop script is more robust than the single sample and is usable as a systemd daemon.
 - To explore all options run `cozify-sample-loop.py --help`
 
+## Docker
+
+The image isn't published anywhere as of today so you'll need to build it yourself. As with other methods of running, first run a single sample run to init config, edit the generated infuxdb config and then run the long-term sampler.
+```
+docker build .
+docker run -v /path/to/persistent/config:/root/.config/ -it cozifytemp:latest cozifytemp-single-sample # interactive run to initialize config & authenticate
+docker run -v /path/to/persistent/config:/root/.config/ cozifytemp:latest # long term sampler
+```
+
 ![example Grafana graphs][graphs]
 
 [graphs]: https://i.imgur.com/TwrfXES.png "example Grafana graphs"
