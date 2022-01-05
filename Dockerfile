@@ -1,8 +1,7 @@
-FROM python:3.11.0a3-slim-bullseye AS poetry_builder
+FROM python:3.11.0a3-bullseye AS poetry_builder
 ENV POETRY_HOME="/opt/poetry"
 ENV PATH="$POETRY_HOME/bin:$PATH"
-RUN apt update && apt install -y curl
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
+RUN curl -sSL https://install.python-poetry.org | python -
 
 FROM poetry_builder as builder
 RUN mkdir /build
