@@ -10,7 +10,7 @@ COPY cozifytemp ./cozifytemp
 COPY poetry.lock pyproject.toml ./
 RUN poetry build -f wheel
 
-FROM python:3.11.0a5-slim-bullseye
+FROM python:3.11.0a7-slim-bullseye
 WORKDIR /srv
 COPY --from=builder /build/dist/*.whl ./
 RUN pip install *.whl
