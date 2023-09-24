@@ -22,7 +22,12 @@ def read():
     global dump_file
     if exists():
         with open(dump_file, 'r') as fh:
-            return json.load(fh)
+            try:
+                data = json.load(fh)
+                return data
+            except json.JSONDecodeError as e:
+                logging.error(f"Cache found but not usable: {e}")
+                return None
     else:
         return None
 

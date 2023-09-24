@@ -96,7 +96,9 @@ def sigterm_handler(signal, frame):
 sensors = [] # used as a cache for sensor data
 if cache.exists(): # populate any existing cache dump
     logging.info('Found cache from disk, adding it to in-memory cache')
-    sensors.extend(cache.read())
+    data = cache.read()
+    if data:
+        sensors.extend(cache.read())
 
 def run():
     signal.signal(signal.SIGTERM, sigterm_handler)
