@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cozifytemp"
-version = "0.1.2"
+version = "0.1.3"
 description = "Sample Cozify sensor to influxdb logger"
 authors = ["Artanicus <artanicus@nocturnal.fi>"]
 license = "MIT"
