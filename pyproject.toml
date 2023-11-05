@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cozifytemp"
-version = "0.1.4"
+version = "0.1.5"
 description = "Sample Cozify sensor to influxdb logger"
 authors = ["Artanicus <artanicus@nocturnal.fi>"]
 license = "MIT"
@@ -8,7 +8,7 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "^3.8"
 pytz = "^2021.1"
-cozify = "0.2.33"
+cozify = "^0.2.33"
 influxdb-client = "^1.19.0"
 requests = "^2.26.0"
 absl-py = "^1.0.0"
