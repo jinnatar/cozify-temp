@@ -3,11 +3,6 @@ from absl import logging
 from influxdb_client import InfluxDBClient, Point, WritePrecision
 from influxdb_client.client.write_api import SYNCHRONOUS
 
-# You can generate a Token from the "Tokens Tab" in the UI
-token = "rDXfwuTAj3h8VsrvNsiovi8Cx5DK43tW-FWUG_Da9dYKHh5NYY93ai6cbiHt4GgjsjEeoiGZ-j0wBxnFfPjRhQ=="
-org = "Arcadia"
-bucket = "cozify"
-
 sensor_types = {
         'temperature': 'C',
         'humidity': '%RH'
@@ -51,5 +46,5 @@ def store_sensor_data(sensors, tz=datetime.timezone.utc, verbose=False):
                     print(infoline)
                 else:
                     logging.info(infoline)
-    write_api.write(bucket, org, sequence)
+    write_api.write(c.config['Storage']['bucket'], c.config['Storage']['organization'], sequence)
     return len(sequence)
