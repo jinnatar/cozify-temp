@@ -12,6 +12,25 @@ files = [
 ]
 
 [[package]]
+name = "attrs"
+version = "23.2.0"
+description = "Classes Without Boilerplate"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "attrs-23.2.0-py3-none-any.whl", hash = "sha256:99b87a485a5820b23b879f04c2305b44b951b502fd64be915879d77a7e8fc6f1"},
+    {file = "attrs-23.2.0.tar.gz", hash = "sha256:935dc3b529c262f6cf76e50877d35a4bd3c1de194fd41f47a2b7ae8f19971f30"},
+]
+
+[package.extras]
+cov = ["attrs[tests]", "coverage[toml] (>=5.3)"]
+dev = ["attrs[tests]", "pre-commit"]
+docs = ["furo", "myst-parser", "sphinx", "sphinx-notfound-page", "sphinxcontrib-towncrier", "towncrier", "zope-interface"]
+tests = ["attrs[tests-no-zope]", "zope-interface"]
+tests-mypy = ["mypy (>=1.6)", "pytest-mypy-plugins"]
+tests-no-zope = ["attrs[tests-mypy]", "cloudpickle", "hypothesis", "pympler", "pytest (>=4.3.0)", "pytest-xdist[psutil]"]
+
+[[package]]
 name = "black"
 version = "23.12.1"
 description = "The uncompromising code formatter."
@@ -194,18 +213,52 @@ files = [
 
 [[package]]
 name = "cozify"
-version = "0.2.35"
+version = "0.2.36"
 description = "Unofficial Python3 API bindings for the (unpublished) Cozify API."
 optional = false
-python-versions = ">=3.8,<4.0"
+python-versions = ">=3.8.1,<4.0.0"
 files = [
-    {file = "cozify-0.2.35-py3-none-any.whl", hash = "sha256:3956f9947309c756ff1c2ce0e1382f48b4160137ccb593adb795dbe2ad2bb63f"},
-    {file = "cozify-0.2.35.tar.gz", hash = "sha256:73b969029358ce440f66dc6c6a72e911e0045b48737c189dabc44d2300c6eec3"},
+    {file = "cozify-0.2.36-py3-none-any.whl", hash = "sha256:e4ded59a9dae3692279c024062a1f672cdfcbb6eaecab31d0b7cb427688a14b9"},
+    {file = "cozify-0.2.36.tar.gz", hash = "sha256:1167e2f97a5c7a147db45584f50465e6af84a2be7076d15b03be18187a2a952d"},
 ]
 
 [package.dependencies]
 absl-py = ">=1.0.0,<2.0.0"
 requests = ">=2.27.1,<3.0.0"
+
+[[package]]
+name = "flake8"
+version = "6.1.0"
+description = "the modular source code checker: pep8 pyflakes and co"
+optional = false
+python-versions = ">=3.8.1"
+files = [
+    {file = "flake8-6.1.0-py2.py3-none-any.whl", hash = "sha256:ffdfce58ea94c6580c77888a86506937f9a1a227dfcd15f245d694ae20a6b6e5"},
+    {file = "flake8-6.1.0.tar.gz", hash = "sha256:d5b3857f07c030bdb5bf41c7f53799571d75c4491748a3adcd47de929e34cd23"},
+]
+
+[package.dependencies]
+mccabe = ">=0.7.0,<0.8.0"
+pycodestyle = ">=2.11.0,<2.12.0"
+pyflakes = ">=3.1.0,<3.2.0"
+
+[[package]]
+name = "flake8-bugbear"
+version = "23.12.2"
+description = "A plugin for flake8 finding likely bugs and design problems in your program. Contains warnings that don't belong in pyflakes and pycodestyle."
+optional = false
+python-versions = ">=3.8.1"
+files = [
+    {file = "flake8-bugbear-23.12.2.tar.gz", hash = "sha256:32b2903e22331ae04885dae25756a32a8c666c85142e933f43512a70f342052a"},
+    {file = "flake8_bugbear-23.12.2-py3-none-any.whl", hash = "sha256:83324bad4d90fee4bf64dd69c61aff94debf8073fbd807c8b6a36eec7a2f0719"},
+]
+
+[package.dependencies]
+attrs = ">=19.2.0"
+flake8 = ">=6.0.0"
+
+[package.extras]
+dev = ["coverage", "hypothesis", "hypothesmith (>=0.2)", "pre-commit", "pytest", "tox"]
 
 [[package]]
 name = "idna"
@@ -255,6 +308,17 @@ files = [
 
 [package.extras]
 colors = ["colorama (>=0.4.6)"]
+
+[[package]]
+name = "mccabe"
+version = "0.7.0"
+description = "McCabe checker, plugin for flake8"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "mccabe-0.7.0-py2.py3-none-any.whl", hash = "sha256:6c2d30ab6be0e4a46919781807b4f0d834ebdd6c6e3dca0bda5a15f863427b6e"},
+    {file = "mccabe-0.7.0.tar.gz", hash = "sha256:348e0240c33b60bbdf4e523192ef919f28cb2c3d7d5c7794f74009290f236325"},
+]
 
 [[package]]
 name = "mypy-extensions"
@@ -319,14 +383,36 @@ docs = ["furo (>=2023.7.26)", "proselint (>=0.13)", "sphinx (>=7.1.1)", "sphinx-
 test = ["appdirs (==1.4.4)", "covdefaults (>=2.3)", "pytest (>=7.4)", "pytest-cov (>=4.1)", "pytest-mock (>=3.11.1)"]
 
 [[package]]
+name = "pycodestyle"
+version = "2.11.1"
+description = "Python style guide checker"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pycodestyle-2.11.1-py2.py3-none-any.whl", hash = "sha256:44fe31000b2d866f2e41841b18528a505fbd7fef9017b04eff4e2648a0fadc67"},
+    {file = "pycodestyle-2.11.1.tar.gz", hash = "sha256:41ba0e7afc9752dfb53ced5489e89f8186be00e599e712660695b7a75ff2663f"},
+]
+
+[[package]]
+name = "pyflakes"
+version = "3.1.0"
+description = "passive checker of Python programs"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pyflakes-3.1.0-py2.py3-none-any.whl", hash = "sha256:4132f6d49cb4dae6819e5379898f2b8cce3c5f23994194c24b77d5da2e36f774"},
+    {file = "pyflakes-3.1.0.tar.gz", hash = "sha256:a0aae034c444db0071aa077972ba4768d40c830d9539fd45bf4cd3f8f6992efc"},
+]
+
+[[package]]
 name = "pyright"
-version = "1.1.343"
+version = "1.1.344"
 description = "Command line wrapper for pyright"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "pyright-1.1.343-py3-none-any.whl", hash = "sha256:75a0d24e8227328198bdfa1f4904ce66b78c2bacf49c269d9e6e3b174b026225"},
-    {file = "pyright-1.1.343.tar.gz", hash = "sha256:871e122d74003e8e5fddb17867220b06ee892de61fa967ca7ca031acdc176738"},
+    {file = "pyright-1.1.344-py3-none-any.whl", hash = "sha256:ab7117a911ce25fcd317f42272579f9ae53a6abc8b8a15f6aa069a11281953ee"},
+    {file = "pyright-1.1.344.tar.gz", hash = "sha256:ab7c962f00dd8141a5a0192c1060fb34b92d1f9047ad70dda45229938051922b"},
 ]
 
 [package.dependencies]
@@ -463,5 +549,5 @@ zstd = ["zstandard (>=0.18.0)"]
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.8"
-content-hash = "4124afe840dd0b6d2325d92a5fb2d0e7c4e2db677a851b6ebc486b2981983369"
+python-versions = "^3.8.1"
+content-hash = "e6aa805382c65e94b3328491df47cb54e3233366ceb28e99f2f761944da0611b"
